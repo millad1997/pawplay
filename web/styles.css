@@ -180,6 +180,12 @@ h1 {
   .mode-card { flex-direction: column; align-items: stretch; }
   .mode-card .preview { width: 100%; max-width: none; aspect-ratio: 16 / 11; }
   .mode-text { padding: 6px 6px 8px; }
+  /* Tablets: centre the menus instead of leaving the bottom of the screen empty. */
+  .screen:not(.doc) > .wrap { min-height: 100%; display: flex; flex-direction: column; justify-content: center; }
+}
+
+@media (min-width: 720px) and (orientation: portrait) {
+  .mode-card .preview { aspect-ratio: 4 / 5; }
 }
 
 .last {

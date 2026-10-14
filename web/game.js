@@ -1273,21 +1273,25 @@
 
   // ---------- Input ----------
 
+  function catchTarget(tg) {
+    game.target = null;
+    game.caught++;
+    game.mode.burst(game.fx, tg.x, tg.y, tg.r);
+    game.respawnAt = game.clock + rand(0.4, 0.8);
+    game.nextIdle = Math.max(game.nextIdle, game.clock + 3);
+    sfx.catch(game.key);
+    updateHud();
+    hudPill.classList.remove('bump');
+    void hudPill.offsetWidth;
+    hudPill.classList.add('bump');
+  }
+
   stage.addEventListener('pointerdown', (e) => {
     if (game.state !== 'playing') return;
     e.preventDefault();
     const tg = game.target;
     if (tg && Math.hypot(e.clientX - tg.x, e.clientY - tg.y) <= tg.r * HIT) {
-      game.target = null;
-      game.caught++;
-      game.mode.burst(game.fx, tg.x, tg.y, tg.r);
-      game.respawnAt = game.clock + rand(0.4, 0.8);
-      game.nextIdle = Math.max(game.nextIdle, game.clock + 3);
-      sfx.catch(game.key);
-      updateHud();
-      hudPill.classList.remove('bump');
-      void hudPill.offsetWidth;
-      hudPill.classList.add('bump');
+      catchTarget(tg);
     } else {
       game.fx.add({
         kind: 'ring', x: e.clientX, y: e.clientY, r0: 4, r1: targetRadius() * 0.8,
@@ -1461,8 +1465,10 @@
   // ---------- Main loop ----------
 
   let lastFrame = performance.now();
+  let frozen = false; // screenshot mode holds a single frame
   function frame(now) {
     requestAnimationFrame(frame);
+    if (frozen) return;
     const dt = clamp((now - lastFrame) / 1000, 0, 0.05);
     lastFrame = now;
     tickHold(now);
@@ -1498,5 +1504,44 @@
       advance(sec) { game.elapsed += sec; },
       settings: () => ({ ...settings }),
     };
+  }
+
+  // Screenshot mode for App Store images: index.html#shot=<screen>-<mode>, e.g. #shot=play-fish.
+  // The iOS debug build passes it through with the launch argument `-shot play-fish`.
+  const shot = /shot=(home|setup|play|catch|finish)-(fish|mouse|butterfly)/.exec(location.hash);
+  if (shot) runShot(shot[1], shot[2]);
+
+  function runShot(screen, key) {
+    Object.assign(settings, DEFAULTS);
+    if (screen === 'home') return;
+    if (screen === 'setup') {
+      openSetup(key);
+      return;
+    }
+    settings.sound = 'off';
+    startGame(key);
+    game.countdown = 0;
+    game.caught = 7;
+    game.elapsed = 64;
+    if (screen === 'finish') {
+      game.caught = 14;
+      game.elapsed = 180;
+      finish(true);
+      return;
+    }
+    // Hold the frame once the target is well inside the screen (and a butterfly's wings are open).
+    const wait = setInterval(() => {
+      const tg = game.target;
+      if (!tg || tg.entering || tg.age < 1.6) return;
+      if (tg.x < view.w * 0.15 || tg.x > view.w * 0.85 || tg.y < view.h * 0.2 || tg.y > view.h * 0.82) return;
+      if (key === 'butterfly' && tg.state !== 'freeze' && Math.abs(Math.cos(tg.phase)) < 0.85) return;
+      clearInterval(wait);
+      if (screen === 'catch') {
+        catchTarget(tg);
+        setTimeout(() => { frozen = true; }, 220);
+      } else {
+        frozen = true;
+      }
+    }, 30);
   }
 })();

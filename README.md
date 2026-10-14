@@ -21,7 +21,7 @@ There are no ads, purchases or accounts, and no data is collected. It works offl
 web/        the game: plain HTML, CSS and JS, no build step (also privacy.html, support.html)
 ios/        SwiftUI app that bundles web/ in a WKWebView
   release.sh          archive + upload to App Store Connect
-appstore/   listing text (metadata.md) and screenshots
+appstore/   listing text (metadata.md), screenshots, capture-screenshots.sh
 .github/workflows/pages.yml   deploys web/ to GitHub Pages on every push to main
 ```
 

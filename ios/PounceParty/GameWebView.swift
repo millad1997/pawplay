@@ -27,7 +27,17 @@ struct GameWebView: UIViewRepresentable {
         #endif
 
         if let index = Bundle.main.url(forResource: "index", withExtension: "html", subdirectory: "web") {
-            webView.loadFileURL(index, allowingReadAccessTo: index.deletingLastPathComponent())
+            var start = index
+            #if DEBUG
+            // App Store screenshots: launch with `-shot play-fish` to open a fixed game screen.
+            let args = ProcessInfo.processInfo.arguments
+            if let i = args.firstIndex(of: "-shot"), i + 1 < args.count,
+               var components = URLComponents(url: index, resolvingAgainstBaseURL: false) {
+                components.fragment = "shot=\(args[i + 1])"
+                start = components.url ?? index
+            }
+            #endif
+            webView.loadFileURL(start, allowingReadAccessTo: index.deletingLastPathComponent())
         }
         return webView
     }

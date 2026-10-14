@@ -65,13 +65,15 @@ Copy these into App Store Connect. Every field is checked against Apple's limits
 
 ## Screenshots
 
-These are in `appstore/screenshots/`. Upload each folder to its matching display size:
+These are in `appstore/screenshots/`. Each folder has 6 screenshots of the real app, captured in the iOS Simulator. Upload them in file-name order (1-fish … 6-finish) to the matching display size:
 
 | Folder | Display size | Pixels |
 |---|---|---|
 | `iphone-6.9` | iPhone 6.9" | 1320 × 2868 |
 | `iphone-6.3` | iPhone 6.3" | 1206 × 2622 |
 | `ipad-13` | iPad 13" | 2064 × 2752 |
+
+To recapture them after changing the game, run `appstore/capture-screenshots.sh`. It needs Xcode and the iOS Simulator.
 
 ## App information
 
