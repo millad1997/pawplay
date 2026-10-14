@@ -1,12 +1,12 @@
 import SwiftUI
 
 @main
-struct PawplayApp: App {
+struct PouncePartyApp: App {
     var body: some Scene {
         WindowGroup {
             GameWebView()
                 .ignoresSafeArea()
-                .background(Color(red: 1.0, green: 0.969, blue: 0.925))
+                .background(Color("LaunchBackground"))
                 .statusBarHidden(true)
                 // Make it harder for a paw to trigger Home or Control Center.
                 .persistentSystemOverlays(.hidden)

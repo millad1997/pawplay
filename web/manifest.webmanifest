@@ -1,6 +1,6 @@
 {
-  "name": "Pawplay",
-  "short_name": "Pawplay",
+  "name": "Pounce Party: Games for Cats",
+  "short_name": "Pounce Party",
   "description": "A touch game for cats: fish, mice and butterflies to catch with a paw.",
   "start_url": "./",
   "scope": "./",

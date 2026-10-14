@@ -6,7 +6,7 @@
 
   const params = new URLSearchParams(location.search);
   const DEBUG = params.has('debug');
-  const IN_APP = /PawplayApp/.test(navigator.userAgent);
+  const IN_APP = /PouncePartyApp/.test(navigator.userAgent);
   const STANDALONE = IN_APP || navigator.standalone === true ||
     matchMedia('(display-mode: standalone), (display-mode: fullscreen)').matches;
   const REDUCED_MOTION = matchMedia('(prefers-reduced-motion: reduce)').matches;

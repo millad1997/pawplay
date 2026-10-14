@@ -3,16 +3,19 @@ import WebKit
 
 /// Hosts the bundled web game (../web, copied into the app as a folder reference).
 struct GameWebView: UIViewRepresentable {
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
         config.mediaTypesRequiringUserActionForPlayback = []
         // game.js looks for this to skip browser-only features (Add to Home Screen tip, wake lock).
-        config.applicationNameForUserAgent = "PawplayApp/1.0"
+        config.applicationNameForUserAgent = "PouncePartyApp/1.0"
 
         let webView = WKWebView(frame: .zero, configuration: config)
+        webView.navigationDelegate = context.coordinator
         webView.isOpaque = true
-        webView.backgroundColor = UIColor(red: 1.0, green: 0.969, blue: 0.925, alpha: 1)
+        webView.backgroundColor = UIColor(named: "LaunchBackground")
         webView.allowsLinkPreview = false
         webView.allowsBackForwardNavigationGestures = false
         webView.scrollView.isScrollEnabled = false
@@ -30,4 +33,27 @@ struct GameWebView: UIViewRepresentable {
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {}
+
+    final class Coordinator: NSObject, WKNavigationDelegate {
+        /// Bundled pages stay in the app; web and mail links open in Safari or Mail.
+        func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction,
+            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+        ) {
+            guard let url = navigationAction.request.url, !url.isFileURL else {
+                decisionHandler(.allow)
+                return
+            }
+            if ["http", "https", "mailto"].contains(url.scheme?.lowercased() ?? "") {
+                UIApplication.shared.open(url)
+            }
+            decisionHandler(.cancel)
+        }
+
+        /// iOS can kill the web content process under memory pressure; reload instead of showing a blank screen.
+        func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            webView.reload()
+        }
+    }
 }

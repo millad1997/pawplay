@@ -192,6 +192,8 @@ h1 {
 }
 
 .fine { margin: 18px 4px 0; color: var(--ink-soft); font-size: 13px; }
+.links { display: flex; gap: 8px; margin-top: 6px; }
+.links a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 2px; }
 
 /* Setup */
 
@@ -375,3 +377,15 @@ body.standalone .only-browser { display: none; }
   .mode-card, .btn, .seg span { transition: none; }
   .hud-pill.bump { animation: none; }
 }
+
+/* ---------- Text pages (privacy, support) ---------- */
+
+.doc { -webkit-user-select: text; user-select: text; line-height: 1.55; font-size: 16.5px; }
+.doc .back { display: inline-block; margin: 0 0 18px; text-decoration: none; }
+.doc h1 { font-size: 32px; margin-bottom: 4px; }
+.doc h2 { font-size: 20px; font-weight: 800; margin: 28px 0 8px; }
+.doc h3 { font-size: 17px; font-weight: 750; margin: 18px 0 4px; }
+.doc p, .doc ol { margin: 0 0 10px; }
+.doc ol { padding-left: 22px; }
+.doc a { color: inherit; text-underline-offset: 2px; }
+.doc .contact { font-weight: 650; }

@@ -1,8 +1,10 @@
 // Offline support: serve from cache, refresh the cache in the background.
-const CACHE = 'pawplay-v1';
+const CACHE = 'pawplay-v2';
 const ASSETS = [
   './',
   'index.html',
+  'privacy.html',
+  'support.html',
   'styles.css',
   'game.js',
   'manifest.webmanifest',
