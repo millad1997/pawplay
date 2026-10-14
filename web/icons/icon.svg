@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd35f"/>
+      <stop offset="1" stop-color="#f38b2a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.36" r="0.62">
+      <stop offset="0" stop-color="#fff7da" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#fff7da" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+  <g transform="translate(192 182) scale(10)" fill="#22304d">
+    <ellipse cx="14.5" cy="27" rx="5.6" ry="7.2" transform="rotate(-25 14.5 27)"/>
+    <ellipse cx="24.5" cy="16.5" rx="6" ry="7.8" transform="rotate(-8 24.5 16.5)"/>
+    <ellipse cx="39.5" cy="16.5" rx="6" ry="7.8" transform="rotate(8 39.5 16.5)"/>
+    <ellipse cx="49.5" cy="27" rx="5.6" ry="7.2" transform="rotate(25 49.5 27)"/>
+    <path d="M32 30c-6.5 0-11 5.2-13.6 10.4-2.4 4.8-3.7 7.8-3.2 11 .6 3.6 3.8 5.4 7.6 4.6 3.5-.7 5.7-2.2 9.2-2.2s5.7 1.5 9.2 2.2c3.8.8 7-1 7.6-4.6.5-3.2-.8-6.2-3.2-11C43 35.2 38.5 30 32 30z"/>
+  </g>
+</svg>

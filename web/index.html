@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Pawplay is a touch game for cats. Fish, mice and butterflies move across the screen and your cat catches them with a paw.">
+  <meta name="theme-color" content="#fff7ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17140f" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pawplay">
+  <meta name="format-detection" content="telephone=no">
+  <title>Pawplay</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="paw" viewBox="0 0 64 64">
+      <ellipse cx="14.5" cy="27" rx="5.6" ry="7.2" transform="rotate(-25 14.5 27)"/>
+      <ellipse cx="24.5" cy="16.5" rx="6" ry="7.8" transform="rotate(-8 24.5 16.5)"/>
+      <ellipse cx="39.5" cy="16.5" rx="6" ry="7.8" transform="rotate(8 39.5 16.5)"/>
+      <ellipse cx="49.5" cy="27" rx="5.6" ry="7.2" transform="rotate(25 49.5 27)"/>
+      <path d="M32 30c-6.5 0-11 5.2-13.6 10.4-2.4 4.8-3.7 7.8-3.2 11 .6 3.6 3.8 5.4 7.6 4.6 3.5-.7 5.7-2.2 9.2-2.2s5.7 1.5 9.2 2.2c3.8.8 7-1 7.6-4.6.5-3.2-.8-6.2-3.2-11C43 35.2 38.5 30 32 30z"/>
+    </symbol>
+  </svg>
+
+  <canvas id="stage" aria-label="Game area"></canvas>
+
+  <!-- Home: choose a game -->
+  <section id="home" class="screen">
+    <div class="wrap">
+      <header class="top">
+        <div class="brand">
+          <span class="logo"><svg><use href="#paw"/></svg></span>
+          <div>
+            <h1>Pawplay</h1>
+            <p class="tagline">A game your cat plays with their paws</p>
+          </div>
+        </div>
+        <button class="icon-btn" id="tipsBtn" aria-label="Tips for playing">?</button>
+      </header>
+
+      <h2 class="section-title">Choose a game</h2>
+      <div class="modes">
+        <button class="mode-card" data-mode="fish">
+          <canvas class="preview" aria-hidden="true"></canvas>
+          <span class="mode-text">
+            <strong>Fish Pond</strong>
+            <span>A golden koi glides and darts around the lily pads.</span>
+          </span>
+        </button>
+        <button class="mode-card" data-mode="mouse">
+          <canvas class="preview" aria-hidden="true"></canvas>
+          <span class="mode-text">
+            <strong>Mouse Chase</strong>
+            <span>A little mouse scurries along the floor, freezes, then bolts.</span>
+          </span>
+        </button>
+        <button class="mode-card" data-mode="butterfly">
+          <canvas class="preview" aria-hidden="true"></canvas>
+          <span class="mode-text">
+            <strong>Butterfly Garden</strong>
+            <span>A blue butterfly flutters over the grass and lands on flowers.</span>
+          </span>
+        </button>
+      </div>
+
+      <p class="last" id="lastSession" hidden></p>
+      <p class="fine">No ads. No in-app purchases. Works offline.</p>
+    </div>
+  </section>
+
+  <!-- Setup: customise, then start -->
+  <section id="setup" class="screen" hidden>
+    <div class="wrap narrow">
+      <header class="bar">
+        <button class="back" id="backBtn"><span aria-hidden="true">‹</span> Games</button>
+      </header>
+      <div class="setup-hero"><canvas class="preview" id="setupPreview" aria-hidden="true"></canvas></div>
+      <h2 class="setup-title" id="setupTitle">Fish Pond</h2>
+
+      <form id="settingsForm" class="settings" onsubmit="return false">
+        <fieldset>
+          <legend>Speed</legend>
+          <div class="seg">
+            <label><input type="radio" name="speed" value="slow"><span>Slow</span></label>
+            <label><input type="radio" name="speed" value="normal"><span>Normal</span></label>
+            <label><input type="radio" name="speed" value="fast"><span>Fast</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Target size</legend>
+          <div class="seg">
+            <label><input type="radio" name="size" value="s"><span>Small</span></label>
+            <label><input type="radio" name="size" value="m"><span>Medium</span></label>
+            <label><input type="radio" name="size" value="l"><span>Large</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Session length</legend>
+          <div class="seg">
+            <label><input type="radio" name="length" value="1"><span>1 min</span></label>
+            <label><input type="radio" name="length" value="3"><span>3 min</span></label>
+            <label><input type="radio" name="length" value="5"><span>5 min</span></label>
+            <label><input type="radio" name="length" value="10"><span>10 min</span></label>
+            <label><input type="radio" name="length" value="0"><span aria-label="No limit">∞</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Sound</legend>
+          <div class="seg">
+            <label><input type="radio" name="sound" value="on"><span>On</span></label>
+            <label><input type="radio" name="sound" value="off"><span>Off</span></label>
+          </div>
+        </fieldset>
+      </form>
+
+      <button class="btn primary big" id="startBtn">Start</button>
+      <p class="hint-text">Then lay the device flat beside your cat.</p>
+    </div>
+  </section>
+
+  <!-- In-game HUD: kept faint so the screen belongs to the cat -->
+  <div id="hud" hidden>
+    <div class="hud-pill">
+      <svg class="hud-paw"><use href="#paw"/></svg>
+      <span id="hudCount">0</span>
+      <span class="hud-sep">·</span>
+      <span id="hudTime">3:00</span>
+    </div>
+    <button id="pauseBtn" aria-label="Hold for 2 seconds to pause">
+      <svg class="ring" viewBox="0 0 56 56" aria-hidden="true">
+        <circle class="ring-track" cx="28" cy="28" r="25"/>
+        <circle id="pauseRing" class="ring-fill" cx="28" cy="28" r="25"/>
+      </svg>
+      <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/></svg>
+    </button>
+    <div id="holdHint" class="hold-hint">Keep holding to pause</div>
+  </div>
+
+  <div id="countdown" class="overlay" hidden>
+    <div class="cd-inner">
+      <div class="cd-num" id="cdNum">3</div>
+      <p class="cd-main">Place the device flat beside your cat</p>
+      <p class="cd-sub">To pause, hold the ⏸ button for 2 seconds</p>
+    </div>
+  </div>
+
+  <div id="pause" class="overlay scrim" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="pauseTitle">
+      <h2 id="pauseTitle">Paused</h2>
+      <p class="muted" id="pauseStats"></p>
+      <div class="actions">
+        <button class="btn primary big" id="resumeBtn">Resume</button>
+        <button class="btn big" id="endBtn">Finish</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="finish" class="overlay scrim" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="finishTitle">
+      <h2 id="finishTitle">Nice hunting!</h2>
+      <div class="stats">
+        <div class="stat"><span class="num" id="statCaught">0</span><span class="lbl" id="statCaughtLbl">targets caught</span></div>
+        <div class="stat"><span class="num" id="statTime">0:00</span><span class="lbl">time played</span></div>
+      </div>
+      <p class="muted small" id="finishNote" hidden>Tip: try Slow speed or Large targets next time.</p>
+      <div class="actions">
+        <button class="btn primary big" id="replayBtn">Replay</button>
+        <button class="btn big" id="anotherBtn">Choose another game</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="tips" class="overlay scrim" hidden>
+    <div class="dialog tips" role="dialog" aria-modal="true" aria-labelledby="tipsTitle">
+      <h2 id="tipsTitle">Playing with your cat</h2>
+      <ol>
+        <li><strong>Lay the device flat</strong> on the floor or a table beside your cat, then press Start. Stay nearby while they play.</li>
+        <li><strong>Protect the screen.</strong> A screen protector helps if your cat plays with claws out.</li>
+        <li><strong>Keep the cat in the game</strong> with Guided Access: Settings › Accessibility › Guided Access. Turn it on, then triple-click the side (or Home) button while Pawplay is open.</li>
+        <li class="only-browser"><strong>Add Pawplay to your Home Screen</strong> so it opens full-screen: tap Share in Safari, then Add to Home Screen.</li>
+        <li><strong>To pause</strong>, hold the ⏸ button in the corner for 2 seconds. A quick paw tap won't stop the game.</li>
+        <li><strong>Not interested?</strong> Try another game, Slow speed, or Large targets. Sound follows your ringer switch.</li>
+      </ol>
+      <button class="btn primary big" id="tipsClose">Got it</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
